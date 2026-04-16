@@ -9,7 +9,12 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
 from dotenv import load_dotenv
 
-load_dotenv()
+# Works both locally and on Streamlit Cloud
+if "OPENAI_API_KEY" in st.secrets:
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+else:
+    from dotenv import load_dotenv
+    load_dotenv()
 
 # ── Page config ──────────────────────────────────────────────
 st.set_page_config(
