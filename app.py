@@ -1,18 +1,17 @@
+import os
 import streamlit as st
 import pandas as pd
-import io
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
-from dotenv import load_dotenv
 
-# Works both locally and on Streamlit Cloud
-if "OPENAI_API_KEY" in st.secrets:
+# ── Load API key — works locally AND on Streamlit Cloud ──────
+try:
     os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-else:
+except Exception:
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -70,7 +69,7 @@ def build_chain(vectorstore):
 
 # ── Section 1: Upload ─────────────────────────────────────────
 st.subheader("📁 Step 1 — Upload your bank statement")
-st.markdown("Don't have one? Download our [sample CSV](sample_data/sample_bank.csv) to try it out!")
+st.markdown("Don't have one? Use our sample CSV to try it out!")
 
 uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
 
